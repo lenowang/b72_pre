@@ -27,10 +27,11 @@ int main(int argc, char* argv[])/*receieve argc and argv*/
             /*Process and print security logs*/
             process_log(security_logs, count);
             
+            /*Free allocated memory*/
+            free_security_logs(security_logs, count);
+            
             exit_code = 0;/*change exit code*/
         }
-        /*free logs*/ 
-        free(security_logs);
     }
 
     return exit_code;/*return code*/

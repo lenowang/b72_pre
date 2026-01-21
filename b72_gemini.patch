@@ -1,0 +1,59 @@
+diff --git a/src/main.c b/src/main.c
+index a437d30..7ac1409 100755
+--- a/src/main.c
++++ b/src/main.c
+@@ -30,9 +30,9 @@ int main(int argc, char* argv[])/*receieve argc and argv*/
+             exit_code = 0;/*change exit code*/
+         }
+         /*free logs*/ 
+-        free(security_logs);
++        free_security_logs(security_logs, count);
+     }
+ 
+     return exit_code;/*return code*/
+ }
+-/*----------------------------END OF MAIN FUNCTION----------------------------*/
+\ No newline at end of file
++/*----------------------------END OF MAIN FUNCTION----------------------------*/
+diff --git a/src/security_data.c b/src/security_data.c
+index 3d53ea1..7e22a1d 100755
+--- a/src/security_data.c
++++ b/src/security_data.c
+@@ -138,3 +138,24 @@ int process_log(security_log_t ** security_logs, int count)
+ 
+     return 0;
+ }
++
++/* Free security logs */
++void free_security_logs(security_log_t ** security_logs, int count)
++{
++    int i;
++    if (security_logs == NULL)
++    {
++        return;
++    }
++    for (i = 0; i < count; i++)
++    {
++        /* Free allocated members */
++        free(security_logs[i]->log_entry_array->object->description);
++        free(security_logs[i]->log_entry_array->object->name);
++        free(security_logs[i]->log_entry_array->object);
++        free(security_logs[i]->log_entry_array);
++        free(security_logs[i]->date);
++    }
++    /* Free the main block */
++    free(security_logs);
++}
+diff --git a/src/security_data.h b/src/security_data.h
+index 0b54ef6..8fcf378 100755
+--- a/src/security_data.h
++++ b/src/security_data.h
+@@ -44,5 +44,6 @@ typedef struct security_log
+ 
+ security_log_t** loading_data(const char* filename, int * count);
+ int process_log(security_log_t ** security_logs, int count);
++void free_security_logs(security_log_t ** security_logs, int count);
+ 
+-#endif
+\ No newline at end of file
++#endif
