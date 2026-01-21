@@ -44,5 +44,7 @@ typedef struct security_log
 
 security_log_t** loading_data(const char* filename, int * count);
 int process_log(security_log_t ** security_logs, int count);
+void free_security_logs(security_log_t ** security_logs, int count);
 
 #endif
+

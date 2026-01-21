@@ -138,3 +138,26 @@ int process_log(security_log_t ** security_logs, int count)
 
     return 0;
 }
+
+/*Free security log data structure*/
+void free_security_logs(security_log_t ** security_logs, int count)
+{
+    int i;
+    for (i = 0; i < count; i++) {
+        if (security_logs[i] != NULL && security_logs[i]->log_entry_array != NULL) {
+            if (security_logs[i]->log_entry_array->object != NULL) {
+                free(security_logs[i]->log_entry_array->object->name);
+                free(security_logs[i]->log_entry_array->object->description);
+                free(security_logs[i]->log_entry_array->object);
+            }
+            free(security_logs[i]->log_entry_array);
+            free(security_logs[i]->date);
+        }
+    }
+    /* Note: The security_logs array and the structs are in a single allocated block,
+       but security_logs points to the beginning of that block, so freeing it once
+       frees the entire block */
+    if (security_logs != NULL) {
+        free(security_logs);
+    }
+}
